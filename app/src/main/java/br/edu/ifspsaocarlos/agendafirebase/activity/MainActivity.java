@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,31 +38,23 @@ import br.edu.ifspsaocarlos.agendafirebase.adapter.ContatoAdapter;
 import br.edu.ifspsaocarlos.agendafirebase.model.Contato;
 
 
-public class MainActivity extends AppCompatActivity{
-
-
+public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-
     private TextView empty;
-
     private ContatoAdapter adapter;
     private SearchView searchView;
-
     private FloatingActionButton fab;
-
     private DatabaseReference databaseReference;
 
     @Override
     public void onBackPressed() {
         if (!searchView.isIconified()) {
-
             searchView.onActionViewCollapsed();
             updateUI(null);
         } else {
             super.onBackPressed();
         }
     }
-
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -84,42 +75,27 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Intent intent = getIntent();
         handleIntent(intent);
 
-        empty= (TextView) findViewById(R.id.empty_view);
-
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        empty = findViewById(R.id.empty_view);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        recyclerView = findViewById(R.id.my_recycler_view);
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layout);
 
-
         databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        Query query= databaseReference.orderByChild("nome");
-
+        Query query = databaseReference.orderByChild("nome");
         FirebaseRecyclerOptions<Contato> options = new FirebaseRecyclerOptions.Builder<Contato>().setQuery(query, Contato.class).build();
-
         adapter = new ContatoAdapter(options);
         recyclerView.setAdapter(adapter);
-
-
         setupRecyclerView();
 
-
-
-
-
         databaseReference.addValueEventListener(new ValueEventListener() {
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-            if (dataSnapshot.getChildrenCount()==0)
+                if (dataSnapshot.getChildrenCount() == 0)
                     empty.setVisibility(View.VISIBLE);
                 else
                     empty.setVisibility(View.GONE);
@@ -127,12 +103,10 @@ public class MainActivity extends AppCompatActivity{
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
 
-
-        fab = (FloatingActionButton)findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,24 +114,20 @@ public class MainActivity extends AppCompatActivity{
                 startActivityForResult(i, 1);
             }
         });
-
         updateUI(null);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.pesqContato).getActionView();
-
-        ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);
-
+        ImageView closeButton = searchView.findViewById(R.id.search_close_btn);
 
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText et = (EditText)findViewById(R.id.search_src_text);
+                EditText et = findViewById(R.id.search_src_text);
                 if (et.getText().toString().isEmpty())
                     searchView.onActionViewCollapsed();
 
@@ -166,16 +136,10 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-
-
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
         searchView.setIconifiedByDefault(true);
-
-
         return true;
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -185,56 +149,40 @@ public class MainActivity extends AppCompatActivity{
                 updateUI(null);
             }
 
-
-
         if (requestCode == 2) {
             if (resultCode == RESULT_OK)
                 showSnackBar(getResources().getString(R.string.contato_alterado));
             if (resultCode == 3)
                 showSnackBar(getResources().getString(R.string.contato_apagado));
-
             updateUI(null);
         }
     }
 
     private void showSnackBar(String msg) {
-        CoordinatorLayout coordinatorlayout= (CoordinatorLayout)findViewById(R.id.coordlayout);
+        CoordinatorLayout coordinatorlayout = (CoordinatorLayout) findViewById(R.id.coordlayout);
         Snackbar.make(coordinatorlayout, msg,
                 Snackbar.LENGTH_LONG)
                 .show();
     }
 
-
-
-    private void updateUI(String nomeContato)
-    {
-
-
-        if (nomeContato==null) {
-            Query query= FirebaseDatabase.getInstance().getReference().orderByChild("nome");
+    private void updateUI(String nomeContato) {
+        if (nomeContato == null) {
+            Query query = FirebaseDatabase.getInstance().getReference().orderByChild("nome");
             FirebaseRecyclerOptions<Contato> options = new FirebaseRecyclerOptions.Builder<Contato>().setQuery(query, Contato.class).build();
 
             adapter = new ContatoAdapter(options);
             recyclerView.setAdapter(adapter);
 
-
             empty.setText(getResources().getString(R.string.lista_vazia));
             fab.setVisibility(View.VISIBLE);
+        } else {
+
+            // EXERCÍCIO: insira aqui o código para buscar somente os contatos que atendam
+            // ao critério de busca digitado pelo usuário na SearchView.
         }
-        else {
-
-            //EXERCÍCIO: insira aqui o código para buscar somente os contatos que atendam
-            //           ao critério de busca digitado pelo usuário na SearchView.
-
-
-
-        }
-
-     }
+    }
 
     private void setupRecyclerView() {
-
-
         adapter.setClickListener(new ContatoAdapter.ItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -243,7 +191,6 @@ public class MainActivity extends AppCompatActivity{
                 startActivityForResult(i, 2);
             }
         });
-
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
@@ -259,7 +206,6 @@ public class MainActivity extends AppCompatActivity{
 
                 }
             }
-
 
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -281,30 +227,18 @@ public class MainActivity extends AppCompatActivity{
                 }
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
-
-
-
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
-
     }
-
-
 
     protected void onStart() {
         super.onStart();
         adapter.startListening();
-
-
     }
 
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
-
     }
-
-
 }

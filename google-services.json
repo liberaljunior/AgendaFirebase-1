@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "31648373709",
+    "firebase_url": "https://agendafirebase-a970d.firebaseio.com",
+    "project_id": "agendafirebase-a970d",
+    "storage_bucket": "agendafirebase-a970d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31648373709:android:dc73fb82c402a6a6",
+        "android_client_info": {
+          "package_name": "br.edu.ifspsaocarlos.agendafirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31648373709-u6natr4e72snbq55pu2a3j1krg72u7rj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ifspsaocarlos.agendafirebase",
+            "certificate_hash": "f449049a029bf98b0e6e1c9b757b6a716d26c4af"
+          }
+        },
+        {
+          "client_id": "31648373709-8elvg8pl28048lg2m9072h1bm5fbe4g9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNdWQi4CiGsgq_GHmlcf5R6u3emwI_ZuI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31648373709-8elvg8pl28048lg2m9072h1bm5fbe4g9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
